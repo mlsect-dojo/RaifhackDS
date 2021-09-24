@@ -10,7 +10,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
 from sklearn.exceptions import NotFittedError
-from raifhack_ds.data_transformers import SmoothedTargetEncoding
+from baseline.raifhack_ds.data_transformers import SmoothedTargetEncoding
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class BenchmarkModel():
             ('ste', OrdinalEncoder(handle_unknown='use_encoded_value',unknown_value=-1),
              self.ste_cat_features)])
 
-        self.model = LGBMRegressor(**model_params)
+        self.model = LGBMRegressor(**model_params, )
 
         self.pipeline = Pipeline(steps=[
             ('preprocessor', self.preprocessor),

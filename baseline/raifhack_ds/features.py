@@ -1,5 +1,5 @@
 import pandas as pd
-from raifhack_ds.utils import UNKNOWN_VALUE
+from baseline.raifhack_ds.utils import UNKNOWN_VALUE
 
 def prepare_categorical(df: pd.DataFrame) -> pd.DataFrame:
     """
