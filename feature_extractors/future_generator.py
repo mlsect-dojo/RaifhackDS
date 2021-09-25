@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
-from new_osm_features import FUNCTIONS_DICT
-import random
+from feature_extractors.new_osm_features import FUNCTIONS_DICT
 
 
 LIMIT = 300
@@ -20,7 +19,7 @@ class FeatureGenerator:
                 cnt += 1
                 if cnt > 300:
                     return new_df
-                operation = random.choise(random)
+                operation = next(iter(FUNCTIONS_DICT))
                 new_df[self.list_of_names[i] + f"_{operation}_" + self.list_of_names[j]] = \
                     FUNCTIONS_DICT[operation](new_df, self.list_of_names[i], self.list_of_names[j])
         return new_df
