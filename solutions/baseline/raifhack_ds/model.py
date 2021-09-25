@@ -116,6 +116,12 @@ class BenchmarkModel():
         :param path: str, путь до файла
         :return: Модель
         """
+        try:
+            pickle.load(open(path, 'rb'))
+        except Exception as e:
+            print(e)
+            exit(1)
+
         with open(path, "rb") as f:
             model = pickle.load(f)
         return model
