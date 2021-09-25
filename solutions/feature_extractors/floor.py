@@ -1,7 +1,15 @@
 from statistics import mean
 from typing import Optional
 import pandas as pd
+import numpy as np
 
+
+def floor_preprocess(df: pd.DataFrame) -> pd.DataFrame:
+    preprocess_floor = df['floor'].apply(parse_floor)
+    floor = 1.93
+    preprocess_floor = preprocess_floor.apply(lambda x: floor if pd.isna(x) else x)
+    df['floor'] = preprocess_floor.apply(lambda x: np.log1p(x) if x > 0 else x)
+    return df
 
 def parse_floor(floor: Optional[str]) -> Optional[int]:
 
