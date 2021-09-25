@@ -1,11 +1,11 @@
 import argparse
 import logging.config
 import pandas as pd
-from baseline.raifhack_ds.features import prepare_categorical
+from solutions.baseline.raifhack_ds.features import prepare_categorical
 from traceback import format_exc
 
-from baseline.raifhack_ds.model import BenchmarkModel
-from baseline.raifhack_ds.settings import LOGGING_CONFIG, NUM_FEATURES, CATEGORICAL_OHE_FEATURES, \
+from solutions.baseline.raifhack_ds.model import BenchmarkModel
+from solutions.baseline.raifhack_ds.settings import LOGGING_CONFIG, NUM_FEATURES, CATEGORICAL_OHE_FEATURES, \
     CATEGORICAL_STE_FEATURES
 
 logging.config.dictConfig(LOGGING_CONFIG)

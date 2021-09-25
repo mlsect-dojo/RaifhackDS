@@ -10,7 +10,6 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler, OrdinalEncoder
 from sklearn.exceptions import NotFittedError
-from baseline.raifhack_ds.data_transformers import SmoothedTargetEncoding
 
 logger = logging.getLogger(__name__)
 
