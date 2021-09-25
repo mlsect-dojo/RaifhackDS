@@ -6,7 +6,7 @@ from traceback import format_exc
 
 from solutions.baseline.raifhack_ds.model import BenchmarkModel
 from solutions.baseline.raifhack_ds.settings import LOGGING_CONFIG, NUM_FEATURES, CATEGORICAL_OHE_FEATURES, \
-    CATEGORICAL_STE_FEATURES
+    CATEGORICAL_STE_FEATURES, TARGET
 
 logging.config.dictConfig(LOGGING_CONFIG)
 logger = logging.getLogger(__name__)
@@ -39,6 +39,8 @@ if __name__ == "__main__":
         args = vars(parse_args())
         logger.info('Load test df')
         test_df = pd.read_csv(args['d'])
+        target = test_df[TARGET]
+        test_df = test_df.drop(TARGET, axis=1)
         logger.info(f'Input shape: {test_df.shape}')
         test_df = prepare_categorical(test_df)
 

@@ -1,12 +1,8 @@
-from pathlib import Path
 from typing import Tuple
 import pandas as pd
-import numpy as np
-from sklearn.linear_model import LinearRegression
-from solutions.baseline.raifhack_ds.settings import MODEL_PARAMS, LOGGING_CONFIG, NUM_FEATURES, CATEGORICAL_OHE_FEATURES,CATEGORICAL_STE_FEATURES,TARGET
+from solutions.baseline.raifhack_ds.settings import TARGET
 from solutions.baseline.raifhack_ds.utils import PriceTypeEnum
 from solutions.baseline.raifhack_ds.features import prepare_categorical
-from solutions.baseline.raifhack_ds.metrics import metrics_stat
 
 
 def prepare_dataset(df: pd.DataFrame) -> pd.DataFrame:
@@ -16,7 +12,7 @@ def prepare_dataset(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def split_xy(df: pd.DataFrame, offer_type) -> Tuple[pd.DataFrame, pd.DataFrame]:
+def split_xy(df: pd.DataFrame) -> Tuple[pd.DataFrame, pd.DataFrame]:
     features = [
         'osm_amenity_points_in_0.001',
         'osm_amenity_points_in_0.005',
@@ -107,48 +103,7 @@ def split_xy(df: pd.DataFrame, offer_type) -> Tuple[pd.DataFrame, pd.DataFrame]:
     ]
     features = list(set(features).intersection(set(df.columns)))
     drop_x_cols = ['price_type', 'per_square_meter_price']
-    df = df[df.price_type == offer_type][features]
+    df = df[df.price_type == PriceTypeEnum.OFFER_PRICE][features]
     y = df[TARGET]
     x = df.drop(drop_x_cols, axis=1)
     return x, y
-
-
-def find_corr_coefficient(y_manual, predictions):
-    """Вычисление корректирующего коэффициента
-    :param X_manual: pd.DataFrame с ручными оценками
-    :param y_manual: pd.Series - цены ручника
-    """
-    deviation = ((y_manual - predictions) / predictions).median()
-    corr_coef = deviation
-    return corr_coef
-
-
-if __name__ == '__main__':
-    train_df = pd.read_csv(Path('data/processed/train.csv'))
-    test_df = pd.read_csv(Path('data/processed/test.csv'))
-
-    train_x, train_y = split_xy(prepare_dataset(train_df), PriceTypeEnum.OFFER_PRICE)
-    test_x, test_y = split_xy(prepare_dataset(test_df), PriceTypeEnum.OFFER_PRICE)
-
-    train_log_y = np.log(train_y)
-
-    model = LinearRegression()
-
-    model.fit(train_x, train_log_y)
-
-    test_log_preds = model.predict(test_x)
-    test_preds = np.exp(test_log_preds)
-    print(metrics_stat(test_y, test_preds))
-
-    train_x_manual, train_y_manual = split_xy(prepare_dataset(train_df), PriceTypeEnum.MANUAL_PRICE)
-
-    predictions_manual = model.predict(train_x_manual)
-    predictions_offer = model.predict(train_x)
-    corr_coef = find_corr_coefficient(train_y_manual, predictions_manual)
-
-    metrics = metrics_stat(train_y.values, predictions_offer / (
-                1 + corr_coef))  # для обучающей выборки с ценами из объявлений смотрим качество без коэффициента
-    print(metrics)
-
-    metrics = metrics_stat(train_y_manual.values, predictions_manual)
-    print(metrics)
