@@ -7,7 +7,8 @@ def parse_floor(floor: Optional[str]) -> Optional[int]:
 
     if floor is None or pd.isna(floor):
         return
-
+    if type(floor) == float or type(floor) == int:
+        return int(floor)
     floor = floor.lower()
     # todo check -1 examples
     floor = floor.replace('подвал', ',0,')
