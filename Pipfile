@@ -8,6 +8,7 @@ numpy = "*"
 pandas = "*"
 sklearn = "*"
 lightgbm = "*"
+catboost = "*"
 
 [dev-packages]
 

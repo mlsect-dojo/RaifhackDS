@@ -2,6 +2,7 @@ from math import radians, cos, sin, asin, sqrt
 import pandas as pd
 import numpy as np
 
+
 salary_data = pd.read_csv('feature_extractors/data/salary.csv', delimiter=";")[["Name", "2020"]]
 salary_data.rename(columns={"Name": "region", '2020': 'salary'}, inplace=True)
 salary_data['salary'] = salary_data['salary'].apply(lambda x: float(x.replace(',', '.')) if type(x) == str else x)
@@ -89,12 +90,12 @@ def calculate_statistics(dataframe):
 
 
 def add_additional_data(dataframe):
-    print(dataframe.shape)
+    # print(dataframe.shape)
     dataframe = pd.merge(dataframe, salary_data, on='region')
-    print(dataframe.shape)
+    # print(dataframe.shape)
 
     dataframe = pd.merge(dataframe, city_data[city_features], on='city', how='left')
-    print(dataframe.shape)
+    # print(dataframe.shape)
 
     for feat in city_features[:-1]:
         dataframe[feat].fillna(-1.0, inplace=True)
@@ -181,6 +182,6 @@ def global_datarfame_statistics(dataframe, path_to_train, is_train=False):
 def preprocessing(dataframe, is_train=False):
     dataframe = calculate_statistics(dataframe)
     dataframe = add_additional_data(dataframe)
-    dataframe = global_datarfame_statistics(dataframe, "data/train.csv", is_train=is_train)
+    dataframe = global_datarfame_statistics(dataframe, "data/raw/train.csv", is_train=is_train)
 
     return dataframe

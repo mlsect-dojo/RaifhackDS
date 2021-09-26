@@ -1,8 +1,8 @@
 import pandas as pd
 
 
-def mortgage_rate(data: pd.DataFrame, raw):
-    data['date'] = pd.to_datetime(data['date'], format='%Y-%m-%d')
+def mortage_rate(df: pd.DataFrame):
+    df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
     a1 = pd.to_datetime(pd.Series('2020-01-01'), format='%Y-%m-%d').values[0]
     a2 = pd.to_datetime(pd.Series('2020-02-09'), format='%Y-%m-%d').values[0]
     a3 = pd.to_datetime(pd.Series('2020-02-09'), format='%Y-%m-%d').values[0]
@@ -27,6 +27,7 @@ def mortgage_rate(data: pd.DataFrame, raw):
             row = 4.25
         return row
 
-    """
-    data['stavka'] = data['date'].apply(add_stavka) потом надо написать вот это
-    """
+
+    stavka = df.date.apply(add_stavka)
+    return stavka
+

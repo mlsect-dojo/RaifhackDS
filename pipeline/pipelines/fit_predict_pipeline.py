@@ -49,7 +49,7 @@ class FitPreidctPipeline(BasePipeline):
 
     def fit_predict(self, train_x: pd.DataFrame, train_y: pd.Series, test_x: pd.DataFrame, test_y: pd.Series) -> dict:
         """Fits model, measures metrics, returns scores"""
-        self.evaluator.fit(train_x, train_y)
+        self.evaluator.fit(train_x, train_y, test_x, test_y)
         predictions = self.evaluator.predict(test_x)
         print(predictions)
         metrics = metrics_stat(predictions, test_y)
